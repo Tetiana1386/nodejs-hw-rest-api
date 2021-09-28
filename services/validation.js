@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const schemaCreateContact = Joi.object({
+const schemaAddContact = Joi.object({
     name: Joi.string()
         .min(3)
         .max(30)
@@ -25,3 +25,14 @@ const schemaUpdateContact = Joi.object({
         .pattern(/^[(][\d]{3}[)]\s[\d]{3}[-][\d]{4}/)
         .optional(),
 }).min(1);
+
+const validate = (schema, obj, next) => {
+    const { error } = schema.validate(obj);
+    if (error) {
+        return next({
+            status: 400,
+            message: 'Bad request',
+        });
+    }
+    next();
+};
