@@ -1,6 +1,6 @@
 const shortid = require('shortid');
 const DB = require('./ db');
-const db = new DB(contacts.json);
+const db = new DB('contacts.json');
 
 const listContacts = async () => {
   return await db.read();
