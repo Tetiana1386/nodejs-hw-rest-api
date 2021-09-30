@@ -5,7 +5,7 @@ const Contacts = require('../../model/index');
 router.get('/', async (_req, res, next) => {
   try {
     const contacts = await Contacts.listContacts();
-    res.json({
+    return res.json({
       status: 'Success',
       code: 200,
       message: 'Contacts found',
@@ -17,8 +17,26 @@ router.get('/', async (_req, res, next) => {
 });
 
 router.get('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+  try {
+    const contact = await Contacts.getContactById(req.params.contactId);
+    if (contact) {
+      return res.json({
+        status: 'Success',
+        code: 200,
+        message: 'Contact found',
+        data: {contact}
+      });
+    } else {
+      return res.status(404).json({
+        status: 'Error',
+        code: 404,
+        message: 'Not Found',
+      });
+    }
+  } catch (e) {
+    next(e);
+  }
+});
 
 router.post('/', async (req, res, next) => {
   res.json({ message: 'template message' })
