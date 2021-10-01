@@ -24,12 +24,9 @@ const removeContact = async (contactId) => {
 const addContact = async (body) => {
   const contacts = await db.read();
   const newContact = { id: shortid.generate(), ...body };
-  contacts.push(newContact);
-  await db.write(contacts);
+  const newContacts = [...contacts, newContact];
+  await db.write(newContacts);
   return newContact;
-  //const newContacts = [...contacts, newContact];
-  //await db.write(newContacts);
-  //return newContact;
 };
 
 const updateContact = async (contactId, body) => {
