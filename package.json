@@ -9,7 +9,6 @@
     "lint:fix": "eslint --fix **/*.js"
   },
   "dependencies": {
-    "D": "^1.0.0",
     "cors": "2.8.5",
     "cross-env": "7.0.3",
     "dotenv": "^10.0.0",
@@ -23,6 +22,7 @@
   },
   "devDependencies": {
     "eslint": "^7.19.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",

@@ -1,7 +1,8 @@
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
+const { HttpCode } = require('../config/constants');
 
-const schemaContact = Joi.object({
+const validContact = Joi.object({
     name: Joi.string()
         .min(3)
         .max(30)
@@ -15,7 +16,7 @@ const schemaContact = Joi.object({
     favorite: Joi.boolean().optional(),
 });
 
-const schemaUpdateContact = Joi.object({
+const validUpdateContact = Joi.object({
     name: Joi.string()
         .min(3)
         .max(30)
@@ -29,7 +30,7 @@ const schemaUpdateContact = Joi.object({
     favorite: Joi.boolean().optional(),
 }).min(1);
 
-const schemaPutContact = Joi.object({
+const validPutContact = Joi.object({
     name: Joi.string()
         .min(3)
         .max(30)
@@ -43,43 +44,43 @@ const schemaPutContact = Joi.object({
     favorite: Joi.boolean().optional(),
 });
 
-const schemaStatusContact = Joi.object({
+const validStatusContact = Joi.object({
     favorite: Joi.boolean().required(),
 });
 
-//const schemaId = Joi.object({
-    //contactId: Joi.objectId().required(),
-//});
+const validId = Joi.object({
+    contactId: Joi.objectId().required(),
+});
 
 const validate = async (schema, obj, res, next) => {
     try {
         await schema.validateAsync(obj);
         next();
     } catch (err) {
-        res.status(400).json({
+        res.status(HttpCode.BAD_REQUEST).json({
             status: 'error',
-            code: 400,
+            code: HttpCode.BAD_REQUEST,
             message: `Field ${err.message.replace(/"/g, '')}`,
         });
     }
 };
 
-module.exports.schemaContact = (req, _res, next) => {
-    return validate(schemaContact, req.body, next);
+module.exports.validContact = (req, res, next) => {
+    return validate(validContact, req.body, res, next);
 };
 
-module.exports.schemaUpdateContact = (req, _res, next) => {
-    return validate(schemaUpdateContact, req.body, next);
+module.exports.validUpdateContact = (req, res, next) => {
+    return validate(validUpdateContact, req.body, res, next);
 };
 
-module.exports.schemaPutContact = (req, _res, next) => {
-    return validate(schemaPutContact, req.body, next);
+module.exports.validPutContact = (req, res, next) => {
+    return validate(validPutContact, req.body, res, next);
 };
 
-module.exports.schemaStatusContact = (req, _res, next) => {
-    return validate(schemaStatusContact, req.body, next);
+module.exports.validStatusContact = (req, res, next) => {
+    return validate(validStatusContact, req.body, res, next);
 };
 
-//module.exports.schemaId = (req, _res, next) => {
-    //return validate(schemaId, req.body, next);
-//};
+module.exports.validId = (req, res, next) => {
+    return validate(validId, req.params, res, next);
+};
