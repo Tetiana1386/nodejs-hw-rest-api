@@ -5,7 +5,7 @@ const { validContact, validUpdateContact, validPutContact, validStatusContact, v
 
 router.get('/', getContacts);
 
-router.get('/:contactId', getContactById);
+router.get('/:contactId', validId, getContactById);
 
 router.post('/', validContact, addContact);
 
