@@ -6,7 +6,7 @@ require('dotenv').config();
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const signup = async (req, res, next) => {
-    const { name, email, password } = req.body;
+    const { email } = req.body;
     const user = await Users.findByEmail(email);
     if (user) {
         return res.status(HttpCode.CONFLICT).json({
