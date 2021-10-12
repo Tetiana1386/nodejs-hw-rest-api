@@ -58,7 +58,7 @@ const validate = async (schema, obj, res, next) => {
         next();
     } catch (err) {
         res.status(HttpCode.BAD_REQUEST).json({
-            status: 'error',
+            status: 'Error',
             code: HttpCode.BAD_REQUEST,
             message: `Field ${err.message.replace(/"/g, '')}`,
         });
