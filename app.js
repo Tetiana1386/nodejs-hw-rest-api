@@ -4,7 +4,7 @@ const cors = require('cors');
 const { HttpCode } = require('./config/constants');
 
 const contactsRouter = require('./routes/api/contacts');
-const usersRouter = require('./routes/users');
+const usersRouter = require('./routes/api/users');
 
 const app = express();
 

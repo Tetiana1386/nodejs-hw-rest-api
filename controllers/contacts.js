@@ -6,7 +6,7 @@ const getContacts = async (_req, res, next) => {
         const contacts = await Contacts.listContacts();
         return res.json({
             status: 'Success',
-            code: HttpCode.SUCCESS,
+            code: HttpCode.OK,
             message: 'Contacts found',
             data: { contacts }
         });
@@ -21,7 +21,7 @@ const getContactById = async (req, res, next) => {
         if (contact) {
             return res.json({
                 status: 'Success',
-                code: HttpCode.SUCCESS,
+                code: HttpCode.OK,
                 message: 'Contact found',
                 data: { contact }
             });
@@ -59,7 +59,7 @@ const removeContact = async (req, res, next) => {
         if (contact) {
             return res.json({
                 status: 'Success',
-                code: HttpCode.SUCCESS,
+                code: HttpCode.OK,
                 message: 'Contact deleted',
                 data: {
                     contact,
@@ -93,7 +93,7 @@ const updateContact = async (req, res, next) => {
         if (contact) {
             return res.json({
                 status: 'Success',
-                code: HttpCode.SUCCESS,
+                code: HttpCode.OK,
                 message: 'Contact updated successfully',
                 data: {
                     contact,
@@ -120,7 +120,7 @@ const updateStatusContact = async (req, res, next) => {
         if (contact) {
             return res.json({
                 status: 'Success',
-                code: HttpCode.SUCCESS,
+                code: HttpCode.OK,
                 message: 'Contact updated successfully',
                 data: {
                     contact,
