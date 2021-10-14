@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const Users = require('../repository/users');
-const { HttpCode } = require('../config/constants');
+const { HttpCode, Subscription} = require('../helpers/constants');
 require('dotenv').config();
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
@@ -62,8 +62,89 @@ const logout = async (req, res) => {
     return res.status(HttpCode.NO_CONTENT).json({ test: 'test' });
 };
 
+const current = async (req, res, next) => {
+    try {
+        const tokenVerification = req.user.token;
+        const { id } = jwt.verify(tokenVerification, SECRET_KEY);
+        const { email, subscription } = await Users.findById(id);
+        return res.status(HttpCode.OK).json({
+            status: 'Success',
+            code: HttpCode.OK,
+            user: {
+                id,
+                email,
+                subscription,
+            },
+        });
+    } catch (error) {
+        next(error);
+    };
+};
+
+const updateSubscription = async (req, res, next) => {
+    try {
+        const tokenVerification = req.user.token;
+        const { id } = jwt.verify(tokenVerification, SECRET_KEY);
+        const user = await Users.updateSubscription(id, req.body)
+        if (user) {
+            return res.json({
+                status: 'Success',
+                code: HttpCode.OK,
+                user: {
+                    id: user.id,
+                    email: user.email,
+                    subscription: user.subscription,
+                },
+            })
+        } else {
+            return res.status(HttpCode.NOT_FOUND).json({
+                status: 'error',
+                code: HttpCode.NOT_FOUND,
+                data: 'Not found',
+            });
+        };
+    } catch (e) {
+        next(e);
+    };
+};
+
+const onlyStarter = async (_req, res) => {
+    return res.json({
+        status: 'Success',
+        code: HttpCode.OK,
+        data: {
+            message: `Only ${Subscription.STARTER}`,
+        },
+    });
+};
+
+const onlyPro = async (_req, res) => {
+    return res.json({
+        status: 'Success',
+        code: HttpCode.OK,
+        data: {
+            message: `Only ${Subscription.PRO}`,
+        },
+    });
+};
+
+const onlyBusiness = async (_req, res) => {
+    return res.json({
+        status: 'Success',
+        code: HttpCode.OK,
+        data: {
+            message: `Only ${Subscription.BUSINESS}`,
+        },
+    });
+};
+
 module.exports = {
     signup,
     login,
     logout,
+    current,
+    updateSubscription,
+    onlyStarter,
+    onlyPro,
+    onlyBusiness,
 };
