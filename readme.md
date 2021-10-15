@@ -1,8 +1,8 @@
-### Работа с контактами
+# Работа с контактами
 
 ## Роуты
 
-# Контакты
+### Контакты
 
 - http://localhost:3000/api/contacts - get - показать все контакты
 - http://localhost:3000/api/contacts - post - добавить контакт (поля name, email, phone - обязательны, favorite - опционально)
@@ -11,7 +11,7 @@
 - http://localhost:3000/api/contacts/id - delete - удалить контакт
 - http://localhost:3000/api/contacts/id/favorite - patch - обновить поле 'favorite'
 
-# Пользователи
+### Пользователи
 
 - http://localhost:3000/api/users/signup - post - регистрация
 
@@ -29,7 +29,7 @@
 
 - http://localhost:3000/api/users/business - get - доступ по подписке business
 
-# Команды:
+### Команды:
 
 - `npm start` &mdash; старт сервера в режиме production
 - `npm run start:dev` &mdash; старт сервера в режиме разработки (development)
