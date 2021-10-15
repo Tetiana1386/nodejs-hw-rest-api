@@ -6,14 +6,14 @@ require('dotenv').config();
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const signup = async (req, res, next) => {
-    const { email } = req.body;
+    const {email} = req.body;
     const user = await Users.findByEmail(email);
     if (user) {
         return res.status(HttpCode.CONFLICT).json({
             status: 'Error',
             code: HttpCode.CONFLICT,
             message: 'Email is already exist',
-        });
+        })
     }
     try {
         const newUser = await Users.create(req.body);
@@ -26,10 +26,10 @@ const signup = async (req, res, next) => {
                 email: newUser.email,
                 subscription: newUser.subscription,
             },
-        });
+        })
     } catch (error) {
         next(error);
-    };
+    }
 };
 
 const login = async (req, res) => {
@@ -43,7 +43,7 @@ const login = async (req, res) => {
             message: 'Invalid credentials',
         });
     };
-    const id = user._id;
+    const id = user.id;
     const payload = { id };
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
     await Users.updateToken(id, token);
@@ -66,12 +66,13 @@ const current = async (req, res, next) => {
     try {
         const tokenVerification = req.user.token;
         const { id } = jwt.verify(tokenVerification, SECRET_KEY);
-        const { email, subscription } = await Users.findById(id);
+        const { name, email, subscription } = await Users.findById(id);
         return res.status(HttpCode.OK).json({
             status: 'Success',
             code: HttpCode.OK,
             user: {
                 id,
+                name,
                 email,
                 subscription,
             },

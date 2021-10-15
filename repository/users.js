@@ -1,7 +1,7 @@
 const User = require('../model/user');
 
 const findById = async (id) => {
-    return await User.findById(id);
+    return await User.findById({ _id: id });
 };
 
 const findByEmail = async (email) => {
@@ -14,12 +14,12 @@ const create = async (options) => {
 };
 
 const updateToken = async (id, token) => {
-    return await User.updateOne({ id }, { token });
+    return await User.updateOne({ _id: id }, { token });
 };
 
 const updateSubscription = async (userId, body) => {
     const result = await User.findOneAndUpdate(
-        { userId },
+        { _id: userId },
         { ...body },
         { new: true }
     );

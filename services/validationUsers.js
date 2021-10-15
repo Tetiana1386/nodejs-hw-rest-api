@@ -33,12 +33,12 @@ const schemaUpdateSubscriptionUser = Joi.object({
         .required(),
 });
 
-const validate = async (schema, obj, res, next) => {
+const validate = async (schema, obj, next) => {
     try {
         await schema.validateAsync(obj);
-        next();
+        return next();
     } catch (err) {
-        res.status(HttpCode.BAD_REQUEST).json({
+        next({
             status: 'Error',
             code: HttpCode.BAD_REQUEST,
             message: `Field ${err.message.replace(/"/g, '')}`,
