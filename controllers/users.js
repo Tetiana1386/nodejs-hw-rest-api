@@ -33,27 +33,35 @@ const signup = async (req, res, next) => {
 };
 
 const login = async (req, res) => {
-    const { email, password } = req.body;
-    const user = await Users.findByEmail(email);
-    const isValidPassword = await user.isValidPassword(password);
-    if (!user || !isValidPassword) {
-        return res.status(HttpCode.UNAUTHORIZED).json({
+    try {
+        const { email, password } = req.body;
+        const user = await Users.findByEmail(email);
+        const isValidPassword = await user.isValidPassword(password);
+        if (!user || !isValidPassword) {
+            return res.status(HttpCode.BAD_REQUEST).json({
+                status: 'Error',
+                code: HttpCode.BAD_REQUEST,
+                message: 'Email or password is wrong',
+            });
+        };
+        const id = user.id;
+        const payload = { id };
+        const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
+        await Users.updateToken(id, token);
+        return res.status(HttpCode.OK).json({
+            status: 'Success',
+            code: HttpCode.OK,
+            date: {
+                token,
+            },
+        });
+    } catch (error) {
+        res.status(HttpCode.UNAUTHORIZED).json({
             status: 'Error',
             code: HttpCode.UNAUTHORIZED,
             message: 'Invalid credentials',
         });
-    };
-    const id = user.id;
-    const payload = { id };
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
-    await Users.updateToken(id, token);
-    return res.status(HttpCode.OK).json({
-        status: 'Success',
-        code: HttpCode.OK,
-        date: {
-            token,
-        },
-    });
+    }
 };
 
 const logout = async (req, res) => {
@@ -99,7 +107,7 @@ const updateSubscription = async (req, res, next) => {
             })
         } else {
             return res.status(HttpCode.NOT_FOUND).json({
-                status: 'error',
+                status: 'Error',
                 code: HttpCode.NOT_FOUND,
                 data: 'Not found',
             });

@@ -29,6 +29,6 @@ const wrapper = (fn) => async (req, res, next) => {
                 break;
         };
     };
-}
+};
 
 module.exports = wrapper;
