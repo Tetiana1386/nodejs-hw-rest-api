@@ -59,7 +59,7 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
     const id = req.user.id;
     await Users.updateToken(id, null);
-    return res.status(HttpCode.NO_CONTENT).json({ });
+    return res.status(HttpCode.NO_CONTENT).json({});
 };
 
 const current = async (req, res, next) => {
