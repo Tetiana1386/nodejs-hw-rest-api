@@ -90,8 +90,7 @@ const current = async (req, res, next) => {
 
 const updateSubscription = async (req, res, next) => {
     try {
-        const tokenVerification = req.user.token;
-        const { id } = jwt.verify(tokenVerification, SECRET_KEY);
+        const id = req.user.id;
         const user = await Users.updateSubscription(id, req.body)
         if (user) {
             return res.json({
@@ -99,6 +98,7 @@ const updateSubscription = async (req, res, next) => {
                 code: HttpCode.OK,
                 user: {
                     id: user.id,
+                    name: user.name,
                     email: user.email,
                     subscription: user.subscription,
                 },
