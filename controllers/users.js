@@ -72,13 +72,11 @@ const logout = async (req, res) => {
 
 const current = async (req, res, next) => {
     try {
-        const tokenVerification = req.user.token;
-        const { id } = jwt.verify(tokenVerification, SECRET_KEY);
-        const { name, email, subscription } = await Users.findById(id);
+        const { id, name, email, subscription } = req.user;
         return res.status(HttpCode.OK).json({
             status: 'Success',
             code: HttpCode.OK,
-            user: {
+            data: {
                 id,
                 name,
                 email,
