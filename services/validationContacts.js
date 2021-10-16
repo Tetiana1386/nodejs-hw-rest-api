@@ -1,6 +1,6 @@
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
-const { HttpCode } = require('../config/constants');
+const { HttpCode } = require('../helpers/constants');
 
 const validContact = Joi.object({
     name: Joi.string()
@@ -52,35 +52,35 @@ const validId = Joi.object({
     contactId: Joi.objectId().required(),
 });
 
-const validate = async (schema, obj, res, next) => {
+const validate = async (schema, obj, next) => {
     try {
         await schema.validateAsync(obj);
-        next();
+        return next();
     } catch (err) {
-        res.status(HttpCode.BAD_REQUEST).json({
-            status: 'error',
+        next({
+            status: 'Error',
             code: HttpCode.BAD_REQUEST,
             message: `Field ${err.message.replace(/"/g, '')}`,
         });
     }
 };
 
-module.exports.validContact = (req, res, next) => {
-    return validate(validContact, req.body, res, next);
+module.exports.validContact = (req, _res, next) => {
+    return validate(validContact, req.body, next);
 };
 
-module.exports.validUpdateContact = (req, res, next) => {
-    return validate(validUpdateContact, req.body, res, next);
+module.exports.validUpdateContact = (req, _res, next) => {
+    return validate(validUpdateContact, req.body, next);
 };
 
-module.exports.validPutContact = (req, res, next) => {
-    return validate(validPutContact, req.body, res, next);
+module.exports.validPutContact = (req, _res, next) => {
+    return validate(validPutContact, req.body, next);
 };
 
-module.exports.validStatusContact = (req, res, next) => {
-    return validate(validStatusContact, req.body, res, next);
+module.exports.validStatusContact = (req, _res, next) => {
+    return validate(validStatusContact, req.body, next);
 };
 
-module.exports.validId = (req, res, next) => {
-    return validate(validId, req.params, res, next);
+module.exports.validId = (req, _res, next) => {
+    return validate(validId, req.params, next);
 };
