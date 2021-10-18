@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
+const fs = require('fs/promises');
 const Users = require('../repository/users');
+const UploadService = require('../services/cloud-upload')
 const { HttpCode, Subscription} = require('../helpers/constants');
 require('dotenv').config();
 
@@ -25,6 +27,7 @@ const signup = async (req, res, next) => {
                 name: newUser.name,
                 email: newUser.email,
                 subscription: newUser.subscription,
+                avatar: newUser.avatar,
             },
         })
     } catch (error) {
@@ -145,6 +148,32 @@ const onlyBusiness = async (_req, res) => {
     });
 };
 
+const uploadAvatar = async (req, res, _next) => {
+    const { id, idUserCloud } = req.user;
+    const file = req.file;
+
+    const destination = 'Avatars';
+    const uploadService = new UploadService(destination);
+    const { avatarUrl, returnIdUserCloud } = await uploadService.save(
+        file.path,
+        idUserCloud,
+    );
+
+    await Users.updateAvatar(id, avatarUrl, returnIdUserCloud);
+    try {
+        await fs.unlink(file.path)
+    } catch (error) {
+        console.log(error.message)
+    }
+    return res.status(HttpCode.OK).json({
+        status: 'Success',
+        code: HttpCode.OK,
+        date: {
+            avatar: avatarUrl,
+        },
+    });
+};
+
 module.exports = {
     signup,
     login,
@@ -154,4 +183,5 @@ module.exports = {
     onlyStarter,
     onlyPro,
     onlyBusiness,
+    uploadAvatar,
 };
