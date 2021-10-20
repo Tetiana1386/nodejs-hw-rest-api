@@ -36,14 +36,13 @@ const signup = async (req, res, next) => {
 };
 
 const login = async (req, res) => {
-    try {
         const { email, password } = req.body;
         const user = await Users.findByEmail(email);
-        const isValidPassword = await user.isValidPassword(password);
+        const isValidPassword = await user?.isValidPassword(password);
         if (!user || !isValidPassword) {
-            return res.status(HttpCode.BAD_REQUEST).json({
+            return res.status(HttpCode.UNAUTHORIZED).json({
                 status: 'Error',
-                code: HttpCode.BAD_REQUEST,
+                code: HttpCode.UNAUTHORIZED,
                 message: 'Email or password is wrong',
             });
         };
@@ -58,13 +57,6 @@ const login = async (req, res) => {
                 token,
             },
         });
-    } catch (error) {
-        res.status(HttpCode.UNAUTHORIZED).json({
-            status: 'Error',
-            code: HttpCode.UNAUTHORIZED,
-            message: 'Invalid credentials',
-        });
-    }
 };
 
 const logout = async (req, res) => {
