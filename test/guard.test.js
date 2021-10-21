@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const guard = require('../helpers/guard');
 const passport = require('passport');
 const { HttpCode } = require('../helpers/constants');

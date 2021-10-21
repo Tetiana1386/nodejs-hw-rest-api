@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const request = require('supertest')
 const fs = require('fs/promises')
 require('dotenv').config()
