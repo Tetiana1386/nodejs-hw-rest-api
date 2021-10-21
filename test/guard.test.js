@@ -1,9 +1,10 @@
+/* eslint-disable no-undef */
 const guard = require('../helpers/guard');
 const passport = require('passport');
 const { HttpCode } = require('../helpers/constants');
 
 describe('Unit test guard helper', () => {
-    const user = { token: '111222333' }
+    const user = { token: '4562145' }
     let req, res, next;
 
     beforeEach(() => {
