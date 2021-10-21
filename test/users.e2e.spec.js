@@ -70,7 +70,6 @@ describe('Testing route users', () => {
 
             expect(response.status).toEqual(200)
             expect(response.body).toBeDefined()
-            
         })
     })
 
@@ -104,7 +103,6 @@ describe('Testing route users', () => {
                 .set('Authorization', `Bearer ${token}`)
 
             expect(response.status).toEqual(204)
-
         })
         it('Logout unauthorized error should return 401 status', async () => {
             const wrongToken = '3456';
