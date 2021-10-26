@@ -29,6 +29,8 @@
 
 - http://localhost:3000/api/users/business - get - доступ по подписке business
 
+- http://localhost:3000/api/users/verify/:verificationToken - get - по параметру verificationToken мы будем искать пользователя
+
 ### Команды:
 
 - `npm start` &mdash; старт сервера в режиме production

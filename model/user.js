@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose');
 const gravatar = require('gravatar');
 const { Subscription, SizeAvatar } = require('../helpers/constants');
 const bcrypt = require('bcryptjs');
+const { nanoid } = require('nanoid')
 const SALT_FACTOR = 6;
 
 const userSchema = new Schema(
@@ -39,6 +40,16 @@ const userSchema = new Schema(
             },
         },
         idUserCloud: { type: String, default: null },
+
+        verify: {
+            type: Boolean,
+            default: false,
+        },
+        verifyToken: {
+            type: String,
+            required: [true, 'Verify token is required'],
+            default: nanoid(),
+        },
     },
     {
         versionKey: false,
