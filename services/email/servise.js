@@ -1,4 +1,5 @@
 const Mailgen = require('mailgen');
+require('dotenv').config();
 
 class EmailService {
     constructor(env, sender) {
